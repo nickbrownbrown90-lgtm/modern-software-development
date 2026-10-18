@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0001: The Modern Software Delivery Map</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .concept-callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .pipeline-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 2rem 0;
+    }
+    .pipeline-node {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.9rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .node-badge {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #fff;
+      background: var(--accent-color);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      min-width: 65px;
+      text-align: center;
+    }
+    .node-text strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+    .node-text span {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .quiz-container {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .quiz-btn {
+      text-align: left;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.15s ease-in-out;
+      font-family: inherit;
+    }
+    .quiz-btn:hover {
+      border-color: var(--accent-color);
+      background: var(--surface-color);
+    }
+    .quiz-btn.correct {
+      background: #dafbe1;
+      border-color: #1a7f37;
+      color: #1a7f37;
+      font-weight: 600;
+    }
+    .quiz-btn.incorrect {
+      background: #ffebe9;
+      border-color: #cf222e;
+      color: #cf222e;
+    }
+    .quiz-feedback {
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .primary-source-box {
+      border: 1px solid var(--border-color);
+      background: var(--callout-bg);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    .leadership-prompt {
+      background: #f0f7ff;
+      border: 1px solid #c8e1ff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .quiz-btn.correct {
+        background: #112a1c;
+        border-color: #2ea043;
+        color: #3fb950;
+      }
+      .quiz-btn.incorrect {
+        background: #3c1618;
+        border-color: #f85149;
+        color: #ff7b72;
+      }
+      .leadership-prompt {
+        background: #152238;
+        border-color: #204170;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="meta-badge">Lesson 0001 • Mental Models</div>
+      <h1>The Modern Software Delivery Map</h1>
+      <p class="subtitle">How modern engineering teams move code safely from an idea to production users.</p>
+    </header>
+
+    <section>
+      <h2>The Shift: From Big Bang Releases to Continuous Flow</h2>
+      <p>
+        In older software engineering models (often called <em>Waterfall</em>), teams spent months writing code in isolation, followed by weeks of painful manual integration, frantic bug fixing, and high-stress midnight releases.
+      </p>
+      <p>
+        Modern high-performing teams work in the exact opposite way: <strong>small batch sizes, automated safety nets, and continuous delivery</strong>. Rather than releasing once a quarter, top engineering organizations deploy updates multiple times a day with near-zero downtime.
+      </p>
+
+      <div class="concept-callout">
+        <strong>The Core Rule of Modern Delivery:</strong> If a task is painful or risky (such as testing, integration, or deployment), do it more frequently in smaller increments using automated pipelines.
+      </div>
+    </section>
+
+    <section>
+      <h2>The End-to-End Pipeline in 5 Minutes</h2>
+      <p>Here is what happens every time an engineer builds a new capability in a modern stack:</p>
+
+      <div class="pipeline-diagram">
+        <div class="pipeline-node">
+          <div class="node-badge">Step 1</div>
+          <div class="node-text">
+            <strong>Feature Branch & Local Coding</strong>
+            <span>Engineer pulls the latest main branch, creates an isolated Git branch, and builds the feature with local hot-reloading and unit tests.</span>
+          </div>
+        </div>
+
+        <div class="pipeline-node">
+          <div class="node-badge">Step 2</div>
+          <div class="node-text">
+            <strong>Pull Request (PR) & Peer Review</strong>
+            <span>The engineer opens a PR on GitHub. Teammates review the implementation for code clarity, security considerations, and architecture fit.</span>
+          </div>
+        </div>
+
+        <div class="pipeline-node">
+          <div class="node-badge">Step 3</div>
+          <div class="node-text">
+            <strong>Continuous Integration (CI) Check</strong>
+            <span>Cloud robots (e.g. GitHub Actions) instantly trigger: checking type safety, running linters, and executing automated test suites.</span>
+          </div>
+        </div>
+
+        <div class="pipeline-node">
+          <div class="node-badge">Step 4</div>
+          <div class="node-text">
+            <strong>Containerization & Preview Deployment</strong>
+            <span>Code is packaged into a Docker container image or deployed to a temporary preview environment so product managers can click-test it.</span>
+          </div>
+        </div>
+
+        <div class="pipeline-node">
+          <div class="node-badge">Step 5</div>
+          <div class="node-text">
+            <strong>Production Deployment & Telemetry</strong>
+            <span>Merged into the main branch, deployed automatically, and monitored via production logs, performance metrics, and error tracking.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Leadership Angle: Where Do Bottlenecks Occur?</h2>
+      <p>When leading or collaborating with engineers, you rarely need to debug semicolons. Instead, your job is understanding system throughput and removing friction:</p>
+      <ul>
+        <li><strong>PR Stagnation:</strong> If pull requests sit unreviewed for 4 days, team velocity plummets regardless of how fast developers code.</li>
+        <li><strong>Flaky Test Suites:</strong> If automated tests fail randomly, developers lose trust in CI and begin bypassing safety checks.</li>
+        <li><strong>Deployment Anxiety:</strong> If releasing to production requires manual steps and fear, release frequency drops and batch sizes balloon dangerously.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Interactive Check: Test Your Intuition</h2>
+      <p>Practice active retrieval to lock these foundations into long-term memory.</p>
+
+      <div class="quiz-container" id="q1">
+        <div class="quiz-question">1. Why do modern high-performing engineering teams prefer small, frequent pull requests (PRs) over large monthly batch releases?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q1', 0, false)">They avoid writing comprehensive unit tests.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 1, true)">They isolate failures and accelerate reviews.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 2, false)">They eliminate need for cloud infrastructure.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 3, false)">They prevent engineers from using containers.</button>
+        </div>
+        <div class="quiz-feedback" id="q1-fb"></div>
+      </div>
+
+      <div class="quiz-container" id="q2">
+        <div class="quiz-question">2. What is the primary role of Continuous Integration (CI) in the modern development lifecycle?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q2', 0, false)">To manage product roadmaps and prioritize feature backlogs effectively.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 1, false)">To automatically deploy unreviewed code straight to live user traffic.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 2, true)">To automatically build and test code changes before branch merging.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 3, false)">To monitor production servers and alert on-call engineers during outages.</button>
+        </div>
+        <div class="quiz-feedback" id="q2-fb"></div>
+      </div>
+    </section>
+
+    <div class="leadership-prompt">
+      <h3>💬 The Conversation Starter</h3>
+      <p>In your next 1-on-1 or team sync, ask your engineering counterpart:</p>
+      <blockquote>
+        <em>"From the moment an engineer writes the last line of code for a feature, how many minutes does it take before it's safely running in production, and where is the longest wait?"</em>
+      </blockquote>
+      <p>This single question reveals whether the team is held back by slow CI pipelines, manual QA bottlenecks, or long PR review cycles.</p>
+    </div>
+
+    <section class="primary-source-box">
+      <h3>📖 Primary Source Recommendation</h3>
+      <p>
+        Read Chapter 1 & 2 of <a href="https://itrevolution.com/product/accelerate/" target="_blank"><em>Accelerate: The Science of Lean Software and DevOps</em></a> by Nicole Forsgren, Jez Humble, and Gene Kim. It provides empirical proof of how delivery throughput and stability reinforce one another rather than being a trade-off.
+      </p>
+    </section>
+
+    <section>
+      <h2>Next Steps & Follow-Up</h2>
+      <p>
+        Explore the companion <a href="../reference/0001-sdlc-map-and-glossary.html">SDLC Reference Map & Glossary</a> for detailed definitions.
+      </p>
+      <div class="concept-callout">
+        <strong>Ask your AI tutor:</strong> Have any questions about Git branching, what happens inside CI runners, or how staging environments work? Reply directly in chat and we will break it down!
+      </div>
+    </section>
+
+    <footer>
+      <p>Modern Software Development • Lesson 0001 • <a href="../MISSION.md">Mission</a> • <a href="../RESOURCES.md">Resources</a></p>
+    </footer>
+  </div>
+
+  <script>
+    function checkAnswer(qId, selectedIdx, isCorrect) {
+      const container = document.getElementById(qId);
+      const buttons = container.querySelectorAll('.quiz-btn');
+      const fb = document.getElementById(qId + '-fb');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.innerHTML = '<strong>Correct!</strong> Small batches make bugs trivial to pinpoint and keep pull request reviews fast and thorough.';
+        fb.style.color = '#1a7f37';
+      } else {
+        fb.innerHTML = '<strong>Not quite.</strong> High-performing teams use small batches because smaller changes are faster to review and vastly easier to troubleshoot when a failure occurs.';
+        fb.style.color = '#cf222e';
+      }
+    }
+  </script>
+</body>
+</html>

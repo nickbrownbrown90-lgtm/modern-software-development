@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference: Modern Software Delivery Map & Glossary</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin: 2rem 0;
+    }
+    .flow-step {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .step-number {
+      background: var(--accent-color);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content h3 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.15rem;
+    }
+    .step-content p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .step-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.78rem;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .glossary-table th, .glossary-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    .glossary-table th {
+      background: var(--callout-bg);
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="meta-badge">Core Reference • 0001</div>
+      <h1>Modern Software Delivery Map & Glossary</h1>
+      <p class="subtitle">A quick-reference guide to the lifecycle stages, core artifacts, and terminology of modern engineering delivery.</p>
+    </header>
+
+    <section>
+      <h2>The 7 Stages of the Modern Delivery Pipeline</h2>
+      <p>Modern software delivery is an automated, continuous feedback loop rather than a rigid waterfall. A change travels through these stages before serving production users:</p>
+
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Discovery, Requirements & RFC (Design)</h3>
+            <p>Translating user pain points and business goals into clear technical specs, user stories, and acceptance criteria.</p>
+            <div class="step-tags">
+              <span class="tag">PRD / Spec</span>
+              <span class="tag">RFC (Request for Comments)</span>
+              <span class="tag">Acceptance Criteria</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Local Development & Version Control</h3>
+            <p>Engineers branch from the main codebase (Git), build locally with hot reloading, and write unit/integration tests.</p>
+            <div class="step-tags">
+              <span class="tag">Git Branch</span>
+              <span class="tag">Local Dev Server</span>
+              <span class="tag">Unit Tests</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Code Review & Pull Requests (PRs)</h3>
+            <p>Peers inspect the code for readability, security, architectural fit, and edge cases before it merges into the mainline.</p>
+            <div class="step-tags">
+              <span class="tag">Pull Request (PR)</span>
+              <span class="tag">Code Review</span>
+              <span class="tag">Linters & Formatters</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Continuous Integration (CI)</h3>
+            <p>Automated cloud servers trigger on every commit/PR: compiling code, running the test suite, and verifying build integrity.</p>
+            <div class="step-tags">
+              <span class="tag">GitHub Actions</span>
+              <span class="tag">Test Runner</span>
+              <span class="tag">Build Validation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Artifact Packaging & Containerization</h3>
+            <p>The application and all its dependencies are sealed into an immutable, portable artifact (such as a Docker image).</p>
+            <div class="step-tags">
+              <span class="tag">Docker Container</span>
+              <span class="tag">Container Registry</span>
+              <span class="tag">Build Artifact</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h3>Continuous Delivery & Deployment (CD)</h3>
+            <p>Automated promotion to staging environments for QA, followed by controlled release to production (canary, blue/green).</p>
+            <div class="step-tags">
+              <span class="tag">Staging vs Prod</span>
+              <span class="tag">Feature Flags</span>
+              <span class="tag">Canary Deploy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-number">7</div>
+          <div class="step-content">
+            <h3>Observability & Incident Management</h3>
+            <p>Live health monitoring: tracking system telemetry, alerts on anomalies, and rapid rollback when regressions appear.</p>
+            <div class="step-tags">
+              <span class="tag">Logs, Metrics, Traces</span>
+              <span class="tag">Alerting (PagerDuty)</span>
+              <span class="tag">Post-Mortem</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Essential Glossary: High-Value Terminology</h2>
+      <table class="glossary-table">
+        <thead>
+          <tr>
+            <th style="width: 28%;">Term</th>
+            <th>Plain-English Definition & Executive Context</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Continuous Integration (CI)</strong></td>
+            <td>The practice of automatically building and testing every single code change before merging, preventing "merge hell" and broken builds.</td>
+          </tr>
+          <tr>
+            <td><strong>Continuous Delivery (CD)</strong></td>
+            <td>The automated capability to release any passing build to production reliably with minimal human friction or downtime.</td>
+          </tr>
+          <tr>
+            <td><strong>Pull Request (PR)</strong></td>
+            <td>A proposed set of code changes submitted for peer review and automated testing before being accepted into the main codebase.</td>
+          </tr>
+          <tr>
+            <td><strong>Container (Docker)</strong></td>
+            <td>A lightweight, standardized package containing the application code, runtime, and system libraries so it runs identically on any machine or cloud.</td>
+          </tr>
+          <tr>
+            <td><strong>Staging Environment</strong></td>
+            <td>A replica of the production environment used to test changes against realistic databases and integrations before real users see them.</td>
+          </tr>
+          <tr>
+            <td><strong>Feature Flag</strong></td>
+            <td>A software toggle allowing code to be deployed into production while keeping the feature invisible until intentionally turned on for users.</td>
+          </tr>
+          <tr>
+            <td><strong>Observability</strong></td>
+            <td>The ability to understand a system's internal health based solely on its external outputs: telemetry from <em>metrics</em>, <em>logs</em>, and <em>distributed traces</em>.</td>
+          </tr>
+          <tr>
+            <td><strong>DORA Metrics</strong></td>
+            <td>Four industry-standard benchmarks for engineering velocity and stability: Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Time to Restore Service (MTTR).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="nav-links">
+      <a href="../lessons/0001-the-modern-software-delivery-map.html">← Jump to Lesson 0001: The Delivery Map</a>
+      <a href="../MISSION.md">View Mission Statement →</a>
+    </div>
+
+    <footer>
+      <p>Modern Software Development Teaching Workspace • Reference Material • Updated dynamically across lessons.</p>
+    </footer>
+  </div>
+</body>
+</html>

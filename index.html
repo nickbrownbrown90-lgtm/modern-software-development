@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Modern SDLC Academy | Master Software Delivery</title>
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0969da">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ModernSDLC">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+  <link rel="stylesheet" href="./assets/style.css">
+  <style>
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+    }
+    .brand h1 {
+      font-size: 1.35rem;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .brand p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .btn-install {
+      background: #0969da;
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s ease;
+    }
+    .btn-install:hover {
+      background: #0550ae;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stat-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .module-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .module-card:hover {
+      border-color: var(--accent-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .module-card.active {
+      border-left: 4px solid var(--accent-color);
+    }
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .module-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .status-available {
+      background: #dafbe1;
+      color: #1a7f37;
+    }
+    .status-upcoming {
+      background: var(--callout-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+    .module-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-link {
+      display: inline-block;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .btn-link:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+    .btn-link.primary {
+      background: var(--accent-color);
+      color: #fff;
+      border-color: var(--accent-color);
+    }
+    .btn-link.primary:hover {
+      background: var(--accent-hover);
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      background: var(--surface-color);
+      color: var(--text-main);
+      margin-bottom: 1.25rem;
+      font-family: inherit;
+    }
+    .api-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ea043;
+    }
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-content {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      max-width: 480px;
+      width: 100%;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <div class="brand">
+        <img src="./icons/icon-192.png" alt="Logo">
+        <div>
+          <h1>Modern SDLC Academy</h1>
+          <p>End-to-End Software Delivery for Engineering Leaders & PMs</p>
+        </div>
+      </div>
+      <button class="btn-install" id="installBtn">
+        📲 Install Mobile App
+      </button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val">7</div>
+        <div class="stat-label">Core Stages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">1 / 7</div>
+        <div class="stat-label">Lessons Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">Full-Stack</div>
+        <div class="stat-label">Anchor Stack</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">Online</div>
+        <div class="stat-label">PWA Offline Cache</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 Your Mission</h3>
+      <p style="margin-bottom: 0.5rem;">
+        Lead, manage, and collaborate effectively with software engineering teams by mastering the end-to-end delivery lifecycle, evaluating technical trade-offs with confidence, and understanding what engineers actually do at each stage.
+      </p>
+      <div class="api-badge">
+        <span class="status-dot" id="apiDot"></span>
+        <span id="apiStatusText">Connected to Google Apps Script API</span>
+      </div>
+    </div>
+
+    <section>
+      <h2>Curriculum & Interactive Lessons</h2>
+
+      <!-- Module 1 -->
+      <div class="module-card active">
+        <div class="module-header">
+          <div>
+            <h3>Module 1: The Modern Delivery Map & Mental Models</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              From idea to production: why small batches win, the 7 stages of delivery, and identifying release bottlenecks.
+            </p>
+          </div>
+          <span class="module-status status-available">Ready Now</span>
+        </div>
+        <div class="module-links">
+          <a href="./lessons/0001-the-modern-software-delivery-map.html" class="btn-link primary">Open Lesson 0001 →</a>
+          <a href="./reference/0001-sdlc-map-and-glossary.html" class="btn-link">SDLC Map & Glossary →</a>
+        </div>
+      </div>
+
+      <!-- Module 2 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 2: Git Workflows, Branching & PR Reviews</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              How engineers collaborate in code: Git branching strategies, pull requests, merge vs rebase, and code review hygiene.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <!-- Module 3 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 3: Continuous Integration (CI) & Automated Testing</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              Unit vs Integration vs E2E tests, the test pyramid, test flakiness, and automated GitHub Actions runners.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <!-- Module 4 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 4: Containerization with Docker</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              Solving "it works on my machine": container images, Dockerfiles, registries, and microservice packaging.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <!-- Module 5 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 5: Continuous Delivery (CD) & Release Strategies</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              Staging environments, feature flags, canary releases, blue/green deployments, and rollback automation.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <!-- Module 6 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 6: Observability & Incident Response</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              The three pillars of observability (logs, metrics, traces), alert fatigue, SLOs/SLAs, and blameless post-mortems.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <!-- Module 7 -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <h3>Module 7: Leading Engineering Teams & DORA Metrics</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">
+              Benchmarking engineering velocity: deployment frequency, lead time, change fail rate, and MTTR.
+            </p>
+          </div>
+          <span class="module-status status-upcoming">Upcoming</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Interactive Glossary Search</h2>
+      <input type="text" id="glossarySearch" class="search-input" placeholder="Search terminology (e.g., CI/CD, PR, Docker, Observability, DORA)...">
+      <div id="glossaryResults"></div>
+    </section>
+
+    <!-- Modal for iOS Installation Guide -->
+    <div class="modal-backdrop" id="iosModal">
+      <div class="modal-content">
+        <h3>Install on Your Mobile Phone</h3>
+        <p style="margin: 0.8rem 0; font-size: 0.95rem;">
+          <strong>On iPhone / iPad (Safari):</strong><br>
+          1. Tap the <strong>Share</strong> button (box with upward arrow).<br>
+          2. Scroll down and tap <strong>"Add to Home Screen"</strong>.<br>
+          3. Tap <strong>Add</strong>.
+        </p>
+        <p style="margin: 0.8rem 0; font-size: 0.95rem;">
+          <strong>On Android (Chrome / Edge):</strong><br>
+          Tap the <strong>"Install app"</strong> banner or three-dot menu (⋮) > <strong>Install app</strong>.
+        </p>
+        <button class="btn-link primary" style="width: 100%; border: none; margin-top: 1rem;" onclick="closeModal()">Got it</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Modern SDLC Academy • Progressive Web App • <a href="./MISSION.md">Mission</a> • <a href="./RESOURCES.md">Resources</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Register Service Worker for offline PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch((err) => console.log('SW registration failed:', err));
+    }
+
+    // PWA Install Prompt handling
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    const iosModal = document.getElementById('iosModal');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'flex';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      } else {
+        iosModal.style.display = 'flex';
+      }
+    });
+
+    function closeModal() {
+      iosModal.style.display = 'none';
+    }
+
+    // Glossary quick filter
+    const glossaryData = [
+      { term: 'Continuous Integration (CI)', def: 'Automated building and testing of every code change before merging into main.' },
+      { term: 'Continuous Delivery (CD)', def: 'Automating release pipelines so passing builds can be pushed to staging/production on demand.' },
+      { term: 'Pull Request (PR)', def: 'A proposed set of code changes submitted for peer code review and automated CI checks.' },
+      { term: 'Docker Container', def: 'A standardized, lightweight packaging format containing application code and runtime dependencies.' },
+      { term: 'Staging Environment', def: 'A pre-production environment replicating production for final verification.' },
+      { term: 'Feature Flag', def: 'A configuration toggle allowing code to be deployed into production while hiding the feature until turned on.' },
+      { term: 'Observability', def: 'Inferring system health and diagnosing unknown issues via metrics, logs, and distributed traces.' },
+      { term: 'DORA Metrics', def: 'Industry standard velocity/stability benchmarks: Deployment Frequency, Lead Time, Change Fail Rate, and MTTR.' }
+    ];
+
+    const searchInput = document.getElementById('glossarySearch');
+    const resultsContainer = document.getElementById('glossaryResults');
+
+    function renderGlossary(filter = '') {
+      const q = filter.toLowerCase().trim();
+      const matched = glossaryData.filter(item => 
+        item.term.toLowerCase().includes(q) || item.def.toLowerCase().includes(q)
+      );
+      if (matched.length === 0) {
+        resultsContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No matching terms found.</p>';
+        return;
+      }
+      resultsContainer.innerHTML = matched.map(item => `
+        <div class="card" style="margin: 0.6rem 0; padding: 0.85rem 1.1rem;">
+          <strong style="color: var(--accent-color);">${item.term}</strong>
+          <p style="margin: 0.25rem 0 0; font-size: 0.92rem;">${item.def}</p>
+        </div>
+      `).join('');
+    }
+
+    searchInput.addEventListener('input', (e) => renderGlossary(e.target.value));
+    renderGlossary();
+
+    // Check Google Apps Script API connectivity
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyhpwUTeATP4uQLuyGeT4ldPTWaNZm0snaPWRMGZfh1AAMdIH7P6YXv_Q2SztE-eeFg/exec';
+    fetch(`${API_URL}?action=ping`, { mode: 'no-cors' })
+      .then(() => {
+        document.getElementById('apiStatusText').textContent = 'Google Apps Script API: Active';
+      })
+      .catch(() => {
+        document.getElementById('apiDot').style.background = '#d97706';
+        document.getElementById('apiStatusText').textContent = 'Running in Offline / Local Mode';
+      });
+  </script>
+</body>
+</html>
