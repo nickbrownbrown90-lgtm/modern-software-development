@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0002: Stage 1 — Local Development & Git Branching</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .concept-callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .flow-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.2rem 0;
+    }
+    .quiz-container {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .quiz-btn {
+      text-align: left;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.15s ease-in-out;
+      font-family: inherit;
+    }
+    .quiz-btn:hover {
+      border-color: var(--accent-color);
+      background: var(--surface-color);
+    }
+    .quiz-btn.correct {
+      background: #dafbe1;
+      border-color: #1a7f37;
+      color: #1a7f37;
+      font-weight: 600;
+    }
+    .quiz-btn.incorrect {
+      background: #ffebe9;
+      border-color: #cf222e;
+      color: #cf222e;
+    }
+    .quiz-feedback {
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .leadership-prompt {
+      background: #f0f7ff;
+      border: 1px solid #c8e1ff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    .primary-source-box {
+      border: 1px solid var(--border-color);
+      background: var(--callout-bg);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .quiz-btn.correct {
+        background: #112a1c;
+        border-color: #2ea043;
+        color: #3fb950;
+      }
+      .quiz-btn.incorrect {
+        background: #3c1618;
+        border-color: #f85149;
+        color: #ff7b72;
+      }
+      .leadership-prompt {
+        background: #152238;
+        border-color: #204170;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="meta-badge">Stage 1 of 5 • Lesson 0002</div>
+      <h1>Stage 1: Local Development & Git Branching</h1>
+      <p class="subtitle">How engineers write code in isolation and why branch lifespan dictates team velocity.</p>
+    </header>
+
+    <section>
+      <h2>What Actually Happens on a Developer's Laptop?</h2>
+      <p>
+        Before a feature touches servers, tests, or users, it starts on an engineer's machine. But engineers don't edit live production code. They work inside a local sandbox governed by two pillars:
+      </p>
+
+      <div class="flow-card">
+        <h3>1. The Local Feedback Loop</h3>
+        <p>
+          Developers run a <strong>local development server</strong> (e.g. Next.js, Vite, Node). Whenever they change a file, <em>Hot Module Replacement</em> updates their browser in milliseconds without a full page reload. This rapid feedback loop is where 90% of engineering problem-solving takes place.
+        </p>
+      </div>
+
+      <div class="flow-card">
+        <h3>2. The Safety of Git Branches</h3>
+        <p>
+          To ensure their work doesn't disrupt anyone else, the developer creates a <strong>Git branch</strong>—an isolated snapshot diverging from the mainline codebase (usually called <code>main</code>):
+        </p>
+        <pre><code>git checkout -b feat/user-authentication</code></pre>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+          Every commit they save here is private to this branch until they choose to share it with the team.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Core Conflict: Trunk-Based vs. Long-Lived Branches</h2>
+      <p>
+        How an engineering team manages branches is one of the strongest predictors of team velocity and bug count. There are two competing philosophies:
+      </p>
+
+      <div class="concept-callout">
+        <strong>The Dangerous Path (Long-Lived Feature Branches):</strong><br>
+        An engineer spends 3 weeks building a big feature on their branch. Meanwhile, 5 other teammates merge 40 changes into <code>main</code>. When the engineer finally tries to merge back, the code has drifted radically. Days are lost untangling <em>merge conflicts</em>, and hidden regression bugs slip through.
+      </div>
+
+      <div class="concept-callout" style="border-left-color: #1a7f37;">
+        <strong>The High-Performing Path (Trunk-Based Development):</strong><br>
+        Branches live for <strong>1 to 2 days maximum</strong>. Even if a multi-week project isn't finished, small incremental chunks are merged continuously into <code>main</code> behind <em>feature flags</em> (toggles that hide unfinished UI). Merge conflicts vanish because code never drifts far apart.
+      </div>
+    </section>
+
+    <section>
+      <h2>Interactive Check: Practice Retrieval</h2>
+      <p>Test your intuition on how branching models impact delivery speed and stability.</p>
+
+      <div class="quiz-container" id="q1">
+        <div class="quiz-question">1. Why does Trunk-Based Development recommend keeping feature branches short-lived (merging within 1–2 days)?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q1', 0, false)">To eliminate all requirements for automated continuous integration.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 1, false)">To prevent multiple engineers from working on different features.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 2, true)">To prevent massive merge conflicts and accelerate release cycles.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 3, false)">To avoid using Git commits in the local repository.</button>
+        </div>
+        <div class="quiz-feedback" id="q1-fb"></div>
+      </div>
+
+      <div class="quiz-container" id="q2">
+        <div class="quiz-question">2. What is the main danger when an engineer keeps a feature branch open for several weeks without syncing with the main branch?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q2', 0, true)">The branch drifts significantly, triggering brutal merge conflicts and integration bugs.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 1, false)">The cloud provider automatically charges extra fees for maintaining idle Git branches.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 2, false)">The local development server permanently deletes all uncommitted code from the machine.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 3, false)">The automated linters permanently refuse to format any modified TypeScript source files.</button>
+        </div>
+        <div class="quiz-feedback" id="q2-fb"></div>
+      </div>
+    </section>
+
+    <div class="leadership-prompt">
+      <h3>💬 The Leadership Question</h3>
+      <p>In your next sprint planning or retrospective, ask:</p>
+      <blockquote>
+        <em>"What is the average lifespan of our feature branches? Are we merging small daily increments, or holding branches open until an entire epic is complete?"</em>
+      </blockquote>
+      <p>If branches stay open longer than 3–4 days, team members will likely report painful merge conflicts and high integration stress.</p>
+    </div>
+
+    <section class="primary-source-box">
+      <h3>📖 Primary Source Recommendation</h3>
+      <p>
+        Read Martin Fowler’s authoritative guide: <a href="https://martinfowler.com/articles/branching-patterns.html" target="_blank"><em>Patterns for Managing Source Code Branches</em></a> or explore the industry playbook at <a href="https://trunkbaseddevelopment.com/" target="_blank"><em>trunkbaseddevelopment.com</em></a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Next Steps</h2>
+      <p>
+        Check the companion cheat sheet: <a href="../reference/0002-git-branching-and-local-workflow.html">Git Branching & Local Workflow Reference</a>.
+      </p>
+      <div class="concept-callout">
+        <strong>Ask your AI tutor:</strong> Curious about how <em>rebase vs. merge</em> works, or how engineers use <em>feature flags</em> to hide incomplete code in production? Ask below in chat anytime!
+      </div>
+    </section>
+
+    <div class="nav-links" style="display: flex; justify-content: space-between; margin-top: 2.5rem; font-weight: 500;">
+      <a href="./0001-the-modern-software-delivery-map.html">← Previous: Lesson 0001</a>
+      <a href="../index.html">Course Hub Home →</a>
+    </div>
+
+    <footer>
+      <p>Modern Software Development • Lesson 0002 • Stage 1 of 5 • <a href="../MISSION.md">Mission</a></p>
+    </footer>
+  </div>
+
+  <script>
+    function checkAnswer(qId, selectedIdx, isCorrect) {
+      const container = document.getElementById(qId);
+      const buttons = container.querySelectorAll('.quiz-btn');
+      const fb = document.getElementById(qId + '-fb');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.innerHTML = '<strong>Correct!</strong> Merging frequently avoids divergence, keeping integration continuous and painless.';
+        fb.style.color = '#1a7f37';
+      } else {
+        fb.innerHTML = '<strong>Incorrect.</strong> Long-lived branches drift away from main, creating painful merge conflicts and unexpected integration regressions.';
+        fb.style.color = '#cf222e';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'modern-sdlc-v1';
+const CACHE_NAME = 'modern-sdlc-v2';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,8 @@ const STATIC_ASSETS = [
   './assets/style.css',
   './lessons/0001-the-modern-software-delivery-map.html',
   './reference/0001-sdlc-map-and-glossary.html',
+  './lessons/0002-stage-1-local-dev-and-git.html',
+  './reference/0002-git-branching-and-local-workflow.html',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
