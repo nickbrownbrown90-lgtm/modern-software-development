@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference: Pull Request Anatomy & Review Hygiene</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 650px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card-ref {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .card-ref h3 {
+      margin-top: 0;
+      color: var(--accent-color);
+    }
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.92rem;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+    }
+    .ref-table th {
+      background: var(--callout-bg);
+    }
+    .nav-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      font-weight: 500;
+    }
+    .convention-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="meta-badge">Reference Guide • 0003</div>
+      <h1>Pull Request Anatomy & Review Hygiene</h1>
+      <p class="subtitle">An executive reference for code review mechanics, reviewer etiquette, and review velocity.</p>
+    </header>
+
+    <section>
+      <h2>The 5 Components of a Pull Request (PR)</h2>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Component</th>
+            <th>What It Contains & Why It Matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Context & Description</strong></td>
+            <td>The "Why" behind the change: user story link, architectural rationale, screenshots for UI changes, and testing instructions.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Code Diff</strong></td>
+            <td>The side-by-side comparison of modified files showing green additions (<code>+</code>) and red deletions (<code>-</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>3. CI Status Checks</strong></td>
+            <td>Automated bots reporting whether tests passed, linters succeeded, and security vulnerability scans are clean.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Inline Comments</strong></td>
+            <td>Specific conversations pinned to exact code lines for clarifying edge cases, security risks, or naming improvements.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Approval & Merge Gate</strong></td>
+            <td>The final sign-off (e.g. "LGTM" / Approved) required by repository protection rules before code is merged into <code>main</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>The Law of PR Sizing</h2>
+      <div class="grid-2">
+        <div class="card-ref" style="border-left: 4px solid #cf222e;">
+          <h3>The Mammoth PR (500+ Lines)</h3>
+          <p><strong>The Phenomenon:</strong> Cognitive overload sets in. Reviewers skim quickly, glance at the diff, and write <em>"Looks good to me!"</em> (LGTM).</p>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">
+            ⚠️ Bugs, architecture flaws, and security oversights slip straight through to production.
+          </p>
+        </div>
+
+        <div class="card-ref" style="border-left: 4px solid #1a7f37;">
+          <h3>The Bite-Sized PR (&lt; 250 Lines)</h3>
+          <p><strong>The Phenomenon:</strong> Reviewers read every line, test edge cases locally, and suggest meaningful architectural improvements.</p>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">
+            ✅ Reviewed within hours, merged quickly, and vastly reduces production regressions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Conventional Comments: Healthy Team Vocabulary</h2>
+      <p>Modern engineering teams use clear prefixes in code reviews to distinguish between non-negotiable fixes and optional thoughts:</p>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">Prefix</th>
+            <th style="width: 28%;">Meaning</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="convention-tag">blocking:</span></td>
+            <td>Must be fixed before approval.</td>
+            <td><code>blocking: Missing auth check allows unauthenticated user deletes.</code></td>
+          </tr>
+          <tr>
+            <td><span class="convention-tag">nit:</span></td>
+            <td>Trivial cosmetic note (author can ignore).</td>
+            <td><code>nit: Typo in log message: "retreive" -> "retrieve".</code></td>
+          </tr>
+          <tr>
+            <td><span class="convention-tag">suggestion:</span></td>
+            <td>Idea for cleaner code (author's choice).</td>
+            <td><code>suggestion: We could use Array.find() here for readability.</code></td>
+          </tr>
+          <tr>
+            <td><span class="convention-tag">question:</span></td>
+            <td>Seeking understanding without blocking.</td>
+            <td><code>question: What happens if the database returns an empty array?</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="nav-links">
+      <a href="../lessons/0003-stage-2-pull-requests-and-code-review.html">← Jump to Lesson 0003: Pull Requests</a>
+      <a href="../reference/0002-git-branching-and-local-workflow.html">Reference 0002: Git Workflow →</a>
+    </div>
+
+    <footer>
+      <p>Modern Software Development Teaching Workspace • Reference Material</p>
+    </footer>
+  </div>
+</body>
+</html>

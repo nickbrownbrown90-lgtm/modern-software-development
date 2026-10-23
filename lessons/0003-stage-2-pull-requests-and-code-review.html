@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0003: Stage 2 — Pull Requests & Peer Code Review</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .concept-callout {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .flow-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.2rem 0;
+    }
+    .quiz-container {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .quiz-btn {
+      text-align: left;
+      background: var(--callout-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.15s ease-in-out;
+      font-family: inherit;
+    }
+    .quiz-btn:hover {
+      border-color: var(--accent-color);
+      background: var(--surface-color);
+    }
+    .quiz-btn.correct {
+      background: #dafbe1;
+      border-color: #1a7f37;
+      color: #1a7f37;
+      font-weight: 600;
+    }
+    .quiz-btn.incorrect {
+      background: #ffebe9;
+      border-color: #cf222e;
+      color: #cf222e;
+    }
+    .quiz-feedback {
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .leadership-prompt {
+      background: #f0f7ff;
+      border: 1px solid #c8e1ff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    .primary-source-box {
+      border: 1px solid var(--border-color);
+      background: var(--callout-bg);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 2rem 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .quiz-btn.correct {
+        background: #112a1c;
+        border-color: #2ea043;
+        color: #3fb950;
+      }
+      .quiz-btn.incorrect {
+        background: #3c1618;
+        border-color: #f85149;
+        color: #ff7b72;
+      }
+      .leadership-prompt {
+        background: #152238;
+        border-color: #204170;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="meta-badge">Stage 2 of 5 • Lesson 0003</div>
+      <h1>Stage 2: Pull Requests & Peer Code Review</h1>
+      <p class="subtitle">How engineering teams maintain quality, prevent bugs, and share knowledge before code merges.</p>
+    </header>
+
+    <section>
+      <h2>What is a Pull Request (PR), Really?</h2>
+      <p>
+        Once an engineer finishes working on their local branch (Stage 1), they don't immediately push it into production. Instead, they open a <strong>Pull Request (PR)</strong> (called a <em>Merge Request</em> in GitLab).
+      </p>
+      <p>
+        A PR is not just a button—it is a <strong>structured conversation and inspection chamber</strong>. It asks the team: <em>"Here is what I built, here is why I built it, and here is every line of code modified. Will you review and approve merging this into our main codebase?"</em>
+      </p>
+
+      <div class="concept-callout">
+        <strong>The Mental Model:</strong> Think of a PR as a legal contract amendment. The author highlights the proposed changes, reviewers inspect for loopholes or unintended side effects, and automated checks verify that basic regulations are satisfied before signing.
+      </div>
+    </section>
+
+    <section>
+      <h2>What Do Reviewers Actually Look For?</h2>
+      <p>Effective teams separate code review into two distinct layers:</p>
+
+      <div class="flow-card">
+        <h3>1. What Machines Check (Automated Linters & Bots)</h3>
+        <p>
+          Humans should <strong>never</strong> spend time debating formatting, missing semicolons, or sorting imports. Automated bots (Stage 3 CI) enforce stylistic and syntax rules before a human reviewer even opens the PR.
+        </p>
+      </div>
+
+      <div class="flow-card">
+        <h3>2. What Humans Check (Architecture & Logic)</h3>
+        <p>Human reviewers focus strictly on high-leverage questions:</p>
+        <ul style="margin-left: 1.2rem; font-size: 0.95rem;">
+          <li><strong>Architecture & Design:</strong> Does this solution fit our system patterns, or does it introduce unneeded complexity?</li>
+          <li><strong>Edge Cases:</strong> What happens if the network drops, the user submits empty input, or the database is slow?</li>
+          <li><strong>Security:</strong> Does this expose private user data or introduce SQL injection vulnerabilities?</li>
+          <li><strong>Knowledge Sharing:</strong> Does another engineer on the team understand how this code works so we don't have a single point of failure?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Secret Bottleneck: PR Turnaround Time</h2>
+      <p>
+        In many engineering organizations, developers write code in 4 hours—and then wait <strong>4 days</strong> for a teammate to review and approve the PR.
+      </p>
+      <p>
+        When PRs sit idle, three damaging things happen:
+      </p>
+      <ol style="margin-left: 1.4rem; font-size: 0.95rem;">
+        <li><strong>Context Switching:</strong> The author moves on to something else, forgetting details. When comments finally arrive, they must mentally reload the old task.</li>
+        <li><strong>Merge Conflicts:</strong> While the PR sits open, teammates merge other code into <code>main</code>, causing the unmerged branch to rot.</li>
+        <li><strong>Stagnant Lead Time:</strong> Team velocity is measured by when value reaches production, not when code is typed. Idle PRs destroy velocity.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Interactive Check: Practice Retrieval</h2>
+      <p>Test your intuition on code reviews and pull request dynamics.</p>
+
+      <div class="quiz-container" id="q1">
+        <div class="quiz-question">1. Why do large pull requests (e.g., over 600 lines of code) degrade overall software quality?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q1', 0, false)">They cause cloud database connections to time out during testing.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 1, false)">They prevent version control systems from executing automated rebase commands cleanly.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 2, true)">They trigger reviewer fatigue, causing reviewers to skim without catching bugs.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q1', 3, false)">They block developers from writing local unit tests on branches.</button>
+        </div>
+        <div class="quiz-feedback" id="q1-fb"></div>
+      </div>
+
+      <div class="quiz-container" id="q2">
+        <div class="quiz-question">2. What is the primary purpose of a peer code review in a modern engineering team?</div>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAnswer('q2', 0, false)">To benchmark individual developer speed against strict company performance quotas.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 1, true)">To share team knowledge, verify architecture, and catch defects early.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 2, false)">To automatically compile source code into portable container runtime images.</button>
+          <button class="quiz-btn" onclick="checkAnswer('q2', 3, false)">To replace all automated unit tests with manual stakeholder verification.</button>
+        </div>
+        <div class="quiz-feedback" id="q2-fb"></div>
+      </div>
+    </section>
+
+    <div class="leadership-prompt">
+      <h3>💬 The Leadership Question</h3>
+      <p>In your next engineering sync, ask:</p>
+      <blockquote>
+        <em>"What is our median PR turnaround time from author submission to first review? Do our engineers feel blocked waiting on reviews, and how can we support faster turnaround?"</em>
+      </blockquote>
+      <p>Elite teams target a PR review turnaround under 4 business hours. If your team averages 48+ hours, reducing PR size is usually the fastest fix.</p>
+    </div>
+
+    <section class="primary-source-box">
+      <h3>📖 Primary Source Recommendation</h3>
+      <p>
+        Read Google's publicly available engineering standard: <a href="https://google.github.io/eng-practices/review/" target="_blank"><em>Google Engineering Practices: How to Do a Code Review</em></a>. It outlines the industry-standard philosophy on reviewer speed, constructive comments, and small PR sizes.
+      </p>
+    </section>
+
+    <section>
+      <h2>Next Steps</h2>
+      <p>
+        Check the companion reference: <a href="../reference/0003-pull-request-anatomy-and-review-hygiene.html">Pull Request Anatomy & Review Hygiene</a>.
+      </p>
+      <div class="concept-callout">
+        <strong>Ask your AI tutor:</strong> Wondering how to handle disagreements between engineers on a PR, or what <em>squash-and-merge</em> means? Ask in chat anytime!
+      </div>
+    </section>
+
+    <div class="nav-links" style="display: flex; justify-content: space-between; margin-top: 2.5rem; font-weight: 500;">
+      <a href="./0002-stage-1-local-dev-and-git.html">← Previous: Stage 1 (Local Dev & Git)</a>
+      <a href="../index.html">Course Hub Home →</a>
+    </div>
+
+    <footer>
+      <p>Modern Software Development • Lesson 0003 • Stage 2 of 5 • <a href="../MISSION.md">Mission</a></p>
+    </footer>
+  </div>
+
+  <script>
+    function checkAnswer(qId, selectedIdx, isCorrect) {
+      const container = document.getElementById(qId);
+      const buttons = container.querySelectorAll('.quiz-btn');
+      const fb = document.getElementById(qId + '-fb');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      fb.style.display = 'block';
+      if (isCorrect) {
+        fb.innerHTML = '<strong>Correct!</strong> Cognitive overload leads to superficial reviews, allowing critical bugs to escape to production.';
+        fb.style.color = '#1a7f37';
+      } else {
+        fb.innerHTML = '<strong>Incorrect.</strong> Large diffs overwhelm reviewers, leading to superficial reviews and missed defects.';
+        fb.style.color = '#cf222e';
+      }
+    }
+  </script>
+</body>
+</html>
